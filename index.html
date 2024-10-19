@@ -260,7 +260,7 @@
                 message = `*CONFIRMAÇÃO CONSULTA* 🎉\n\nOlá, *${nome}*! 👋\n\nEstamos felizes em confirmar sua consulta!\n📅 *Data:* ${data}\n🕒 *Hora:* ${hora}\n\nVocê confirma o agendamento?\n\nAtenciosamente,\n[Hospital do Rim Pré-Transplante]\nEnviado por: *${funcionario}*`;
                 break;
             case 'cancelamentoConsulta':
-                message = `*CANCELAMENTO CONSULTA* 😔\n\nOi, *${nome}*! Infelizmente, a consulta marcada para o dia *${dataAntiga}* foi cancelada.\nFique tranquilo(a)! Entraremos em contato com uma nova data em breve.\n\nAtenciosamente,\n[Hospital do Rim Pré-Transplante]\nEnviado por: *${funcionario}*`;
+                message = `*CANCELAMENTO CONSULTA* 😔\n\nOi, *${nome}*! Infelizmente, a consulta marcada para o dia *${data}* foi cancelada.\nFique tranquilo(a)! Entraremos em contato com uma nova data em breve.\n\nAtenciosamente,\n[Hospital do Rim Pré-Transplante]\nEnviado por: *${funcionario}*`;
                 break;
             case 'cancelamentoNovaData':
                 message = `*CANCELAMENTO COM NOVA DATA* 🚨\n\nOi, *${nome}*! Sua consulta marcada para o dia *${dataAntiga}* foi cancelada.\n📅 Sua nova consulta está agendada para: *${data}* 🕒 *Hora:* ${hora}.\n\nAtenciosamente,\n[Hospital do Rim Pré-Transplante]\nEnviado por: *${funcionario}*`;
