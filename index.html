@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Links para WhatsApp</title>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to right, #ffffff, #e0ffe0);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            height: 90%;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: -60px;
+        }
+
+        h2, h3, .footer-text {
+            text-align: center;
+            margin: 0;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .copyright {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .hrim-box {
+            width: 250px;
+            height: 100px;
+            background: white;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .hrim-text {
+            font-size: 100px;
+            font-weight: bold;
+            line-height: 1;
+            width: 100%;
+            text-align: center;
+        }
+
+        .green {
+            color: green;
+        }
+
+        .black {
+            color: black;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"], input[type="date"], input[type="time"], select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: 260px;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .checkbox-group input {
+            margin-right: 10px;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            width: calc(50% - 10px);
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .button-full {
+            width: 100%;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .employee-select {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Adicionando margem ao texto "Preencha os dados abaixo:" */
+        .margin-bottom {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="copyright">Desenvolvido por: Gabriel Souza de Aguiar</h1>
+        <h2>Gerador de Links para WhatsApp</h2>
+        <h3>Selecione a mensagem a ser enviada</h3>
+        
+        <div class="hrim-box">
+            <span class="hrim-text">
+                <span class="green">H</span><span class="black">rim</span>
+            </span>
+        </div>
+        
+        <div class="form-group">
+            <input type="text" id="nome" placeholder="Nome" required>
+        </div>
+        <div class="form-group">
+            <input type="text" id="telefone" placeholder="Telefone (com DDD)" required>
+        </div>
+        <div class="form-group">
+            <input type="text" id="data" placeholder="Data (DD/MM/AAAA)" required>
+        </div>
+        <div class="form-group">
+            <input type="text" id="hora" placeholder="Hora (HH:MM)" required>
+        </div>
+        
+        <select id="funcionario" class="employee-select" required>
+            <option value="">Selecione um funcionário</option>
+            <option value="Funcionário 1">Funcionário 1</option>
+            <option value="Funcionário 2">Funcionário 2</option>
+            <option value="Funcionário 3">Funcionário 3</option>
+        </select>
+        
+        <div class="form-row">
+            <button class="button" onclick="generateMessage('confirmacao')">Confirmação de Consulta</button>
+            <button class="button" onclick="generateMessage('cancelamento')">Cancelamento de Consulta</button>
+        </div>
+        <div class="form-row">
+            <button class="button" onclick="generateMessage('cancelamentoNovaData')">Cancelamento com Nova Data</button>
+            <button class="button" onclick="generateMessage('confirmacaoInscricao')">Confirmação Inscrição Transplante</button>
+        </div>
+        <div class="form-row">
+            <button class="button button-full" onclick="generateMessage('confirmacaoCateterismo')">Confirmação Cateterismo</button>
+        </div>
+        
+        <div class="whatsapp-link hidden" id="whatsappLink">
+            <p>Clique no link abaixo para enviar a mensagem pelo WhatsApp:</p>
+            <a href="#" id="whatsappLinkAnchor" target="_blank">Enviar Mensagem</a>
+        </div>
+
+        <p class="footer-text">Por favor, responda com "Sim" para confirmar ou "Não" para cancelar.</p>
+    </div>
+
+    <script>
+        function generateMessage(tipo) {
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+            const data = document.getElementById('data').value;
+            const hora = document.getElementById('hora').value;
+            const funcionario = document.getElementById('funcionario').value;
+            let message = '';
+
+            switch (tipo) {
+                case 'confirmacao':
+                    message = `*CONFIRMAÇÃO CONSULTA* 🎉\n\nOlá, *${nome}*! 👋\n\nEstamos felizes em confirmar sua consulta!\n📅 *Data:* ${data}\n🕒 *Hora:* ${hora}\n\nPor favor, responda com "Sim" para confirmar ou "Não" para cancelar.\n\nAtenciosamente,\n[Hospital do Rim Pré-Transplante]\nEnviado por: *${funcionario}*`;
+                    break;
+                case 'cancelamento':
+                    message = `*CANCELAMENTO CONSULTA* 😔\n\nOi, *${nome}*! Infelizmente, a consulta marcada para o dia *${data}* foi cancelada.\nFique tranquilo(a)! Entraremos em contato com uma nova data em breve.\n\nPor favor, responda com "Sim" para confirmar o cancelamento ou "Não" se você deseja reagendar.\n\nAtenciosamente,\n[Hospital do Rim Pré-Transplante]\nEnviado por: *${funcionario}*`;
+                    break;
+                case 'cancelamentoNovaData':
+                    message = `*CANCELAMENTO COM NOVA DATA* 🚨\n\nOi, *${nome}*! Sua consulta marcada para o dia *${data}* foi cancelada.\n📅 Sua nova consulta está agendada para: *${data}* 🕒 *Hora:* ${hora}.\n\nPor favor, responda com "Sim" para confirmar ou "Não" se você deseja reagendar.\n\nAtenciosamente,\n[Hospital do Rim Pré-Transplante]\nEnviado por: *${funcionario}*`;
+                    break;
+                case 'confirmacaoInscricao':
+                    message = `*CONFIRMAÇÃO INSCRIÇÃO TRANSPLANTE* 🏥\n\nOlá, *${nome}*! 🎉\n\nSua inscrição na fila de transplante foi agendada para:\n📅 *Data:* ${data} 🕒 *Hora:* ${hora}.\n\n📝 **Não esqueça de trazer:**\n- Ficha de Inscrição\n- RG ou CNH\n- Cartão SUS\n- Comprovante de Endereço\n\nPor favor, responda com "Sim" para confirmar ou "Não" se você não poderá comparecer.\n\nAtenciosamente,\n[Hospital do Rim Pré-Transplante]\nEnviado por: *${funcionario}*`;
+                    break;
+                case 'confirmacaoCateterismo':
+                    message = `*CONFIRMAÇÃO CATETERISMO* 🏥\n\nOi, *${nome}*! 🎉\n\nEstamos prontos para te receber para o cateterismo!\n📅 *Data:* ${data} 🕒 *Hora:* ${hora}\n📍 *Local:* Rua Borges Lagoa 960, 1º Andar.\n\n⚠️ Não esqueça de seguir todas as orientações que estão no seu agendamento!\n\nPor favor, responda com "Sim" para confirmar ou "Não" se você não poderá comparecer.\n\nAtenciosamente,\n[Hospital do Rim Pré-Transplante]\nEnviado por: *${funcionario}*`;
+                    break;
+            }
+
+            const whatsappBaseUrl = 'https://wa.me/';
+            const whatsappMessage = encodeURIComponent(message);
+            const whatsappFullLink = `${whatsappBaseUrl}${telefone}?text=${whatsappMessage}`;
+            const whatsappLinkDiv = document.getElementById('whatsappLink');
+            const whatsappLinkAnchor = document.getElementById('whatsappLinkAnchor');
+            
+            whatsappLinkAnchor.href = whatsappFullLink;
+            whatsappLinkDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
